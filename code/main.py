@@ -1,0 +1,70 @@
+# -*- coding: utf-8 -*-
+
+"""Documentation file main.py."""
+
+# =============================================================================
+# IMPORTS
+# =============================================================================
+
+from pprint import pprint
+from settings.log import Log
+from actions.bing import BingCorona
+from settings.configuration import Configuration
+from client.url import URL
+
+import sys
+from colorama import init
+init(strip=not sys.stdout.isatty()) # strip colors if stdout is redirected
+from termcolor import cprint
+from pyfiglet import figlet_format
+
+# =============================================================================
+# GLOBAL DEFINITION
+# =============================================================================
+
+config = Configuration()
+
+log_path = config.get_env("LOG_PATH") if config.get_env("LOG_PATH") else None
+log_file = config.get_env("LOG_FILE") if config.get_env("LOG_FILE") else None
+
+logger = Log(log_path, log_file, config.get_env("LOG_LEVEL"), config.get_env("LOGGER")).logger
+
+bing = BingCorona(config.get_env("ENDPOINT_BING"), logger)
+
+# =============================================================================
+# MAIN
+# =============================================================================
+
+if __name__ == "__main__":
+
+    cprint(figlet_format("Corona", font="starwars"), "red", "on_yellow", attrs=["dark"])
+
+    logger.info("Hey! We are inside the Container.")
+
+    bing_corona_information = bing.get_data()
+
+    status = bing_corona_information["status"]
+
+    logger.info(f"Bing Corona Get Information Status - {status}")
+
+    data = bing_corona_information["data"]
+
+    total_cases_confirmed = data["totalConfirmed"]
+    total_cases_deaths = data["totalDeaths"]
+    total_cases_recovered = data["totalRecovered"]
+    last_update = data["lastUpdated"]
+
+    logger.info("Global information...")
+
+    logger.debug(f"Total Cases Confirmed {total_cases_confirmed}...")
+
+    logger.debug(f"Total Cases Deaths {total_cases_deaths}...")
+
+    logger.debug(f"Total Cases Recovered {total_cases_recovered}...")
+
+    logger.debug(f"last Update {last_update}...")
+
+    areas = data["areas"]
+
+    for key, value in enumerate(areas):
+        print(f"{key} - {value}\n")
