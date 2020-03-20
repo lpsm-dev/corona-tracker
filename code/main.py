@@ -6,11 +6,13 @@
 # IMPORTS
 # =============================================================================
 
-from pprint import pprint
 from settings.log import Log
-from actions.bing import BingCorona
 from settings.configuration import Configuration
-from client.url import URL
+
+from actions.bing import BingCorona
+
+from resources.date import DateTime
+from resources.coordenadas import Coordenadas
 
 import sys
 from colorama import init
@@ -54,15 +56,22 @@ if __name__ == "__main__":
     total_cases_recovered = data["totalRecovered"]
     last_update = data["lastUpdated"]
 
-    logger.info("Global information...")
+    print("Global information...")
 
-    logger.debug(f"Total Cases Confirmed {total_cases_confirmed}...")
+    print(f"Total Cases Confirmed {total_cases_confirmed}...")
 
-    logger.debug(f"Total Cases Deaths {total_cases_deaths}...")
+    print(f"Total Cases Deaths {total_cases_deaths}...")
 
-    logger.debug(f"Total Cases Recovered {total_cases_recovered}...")
+    print(f"Total Cases Recovered {total_cases_recovered}...")
 
-    logger.debug(f"last Update {last_update}...")
+    date = DateTime(last_update).serialize()
+
+    day = date["date_information_iso_date_8601_last_updated"][0]
+    hour = date["date_information_iso_date_8601_last_updated"][1]
+
+    print(f"Last Update - Day Information - {day}...")
+    print(f"Last Update - Hour Information - {hour}...")
+
 
     areas = data["areas"]
 

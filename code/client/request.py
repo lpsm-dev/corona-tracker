@@ -6,7 +6,7 @@
 # IMPORTS
 # =============================================================================
 
-from client.url import URL
+from resources.url import URL
 from typing import Text, NoReturn, Callable
 from client.exception import URLException, InvalidURL, RequestGetException, RequestGetStatusException
 
