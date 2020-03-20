@@ -81,11 +81,17 @@ Hey!! If you like this project or if you find some bugs feel free to contact me 
 ## Pomodoro Tasks
 
 - [x] Create the first Dockerfile with multistage builds strategy.
-- [] Testar execução do Dockerfile buildando a imagem e executando o Container.
+- [x] Test Dockerfile with multistage.
+- [x] Create log class and config class.
+- [x] Adding exceptions handlers in log class and config class.
+- [x] Customize log with coloredlogs.
+- [x] Create simple ASCII Art with pyfiglet module.
+- [x] Adding request class.
+- [x] Adding Bing Corona to get information.
 
 ## TODO
 
-- [] Implementar log para o projeto.
+- [] Implement country information search using restcountries API.
 
 ## Project Status
 
