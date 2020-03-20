@@ -8,8 +8,14 @@ ENV PIP_DISABLE_PIP_VERSION_CHECK=1
 
 COPY [ "./requirements.txt", "." ]
 
-RUN pip install --upgrade pip && \
-    pip install --user --no-warn-script-location -r ./requirements.txt
+RUN apk add --no-cache --virtual .build-deps \
+        gcc=9.2.0-r3 \
+        libc-dev=0.7.2-r0 \
+        libffi-dev=3.2.1-r6 \
+        openssl-dev=1.1.1d-r3 && \
+    pip install --upgrade pip && \
+    pip install --user --no-warn-script-location -r ./requirements.txt && \
+    apk del .build-deps
 
 FROM base
 
@@ -52,8 +58,10 @@ COPY --chown=python:python --from=install-env [ "/root/.local", "/usr/local" ]
 
 COPY --chown=python:python [ "./code", "." ]
 
+COPY [ "./docker-entrypoint.sh", "/usr/local/bin/" ]
+
 RUN find ./ -iname "*.py" -type f -exec chmod a+x {} \; -exec echo {} \;;
 
-ENTRYPOINT []
+ENTRYPOINT [ "docker-entrypoint.sh" ]
 
-CMD []
+CMD [ "python", "./main.py" ]

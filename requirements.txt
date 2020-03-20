@@ -12,3 +12,6 @@ colorama==0.4.3
 
 # DATETIME
 python-dateutil==2.8.1
+
+# TELEGRAM
+python-telegram-bot==12.4.2
