@@ -1,6 +1,4 @@
-ARG PYTHON_VERSION=3.8-alpine3.11
-
-FROM python:${PYTHON_VERSION} as base
+FROM python:3.7.7-stretch as base
 
 FROM base as install-env
 
@@ -8,14 +6,8 @@ ENV PIP_DISABLE_PIP_VERSION_CHECK=1
 
 COPY [ "./requirements.txt", "." ]
 
-RUN apk add --no-cache --virtual .build-deps \
-        gcc=9.2.0-r4 \
-        libc-dev=0.7.2-r0 \
-        libffi-dev=3.2.1-r6 \
-        openssl-dev=1.1.1d-r3 && \
-    pip install --upgrade pip && \
-    pip install --user --no-warn-script-location -r ./requirements.txt && \
-    apk del .build-deps
+RUN pip install --upgrade pip && \
+    pip install --user --no-warn-script-location -r ./requirements.txt
 
 FROM base
 
@@ -41,28 +33,22 @@ ENV HOME=/usr/src/code \
     ENDPOINT_BING=https://www.bing.com/covid/data \
     ENDPOINT_REST_COUNTRIES=https://restcountries.eu/rest/v2/ \
     ENDPOINT_THE_TRACKER_VIRUS=https://thevirustracker.com/ \
-    TELEGRAM_TOKEN=1125616254:
+    TELEGRAM_TOKEN=
 
-RUN set -ex && \
-    addgroup -g 1000 python && \
-    adduser -u 999 -G python -h ${HOME} -s /bin/sh -D python && \
-    mkdir -p ${HOME} && mkdir -p {LOG_PATH} && \
-    chown -hR python:python ${HOME} /var && \
-    touch {LOG_PATH}/{LOG_FILE}
-
-RUN apk update && \
-    apk add --update --no-cache 'su-exec>=0.2'
+RUN mkdir -p ${HOME} && mkdir -p {LOG_PATH} && \
+    touch {LOG_PATH}/{LOG_FILE} && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR ${HOME}
 
-COPY --chown=python:python --from=install-env [ "/root/.local", "/usr/local" ]
+USER root
 
-COPY --chown=python:python [ "./code", "." ]
+COPY --from=install-env [ "/root/.local", "/usr/local" ]
 
-COPY [ "./docker-entrypoint.sh", "/usr/local/bin/" ]
+COPY [ "./code", "." ]
 
 RUN find ./ -iname "*.py" -type f -exec chmod a+x {} \; -exec echo {} \;;
 
-ENTRYPOINT [ "docker-entrypoint.sh" ]
+ENTRYPOINT []
 
 CMD [ "python", "./main.py" ]

@@ -88,7 +88,7 @@ if __name__ == "__main__":
         "hour": hour,
     }
 
-    telegram = TelegramBot(config.get_env("TELEGRAM_TOKEN"), information)
+    telegram = TelegramBot(config.get_env("TELEGRAM_TOKEN"), information, logger)
 
     print("\npress CTRL + C to cancel.")
     
