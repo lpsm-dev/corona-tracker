@@ -9,7 +9,7 @@ ENV PIP_DISABLE_PIP_VERSION_CHECK=1
 COPY [ "./requirements.txt", "." ]
 
 RUN apk add --no-cache --virtual .build-deps \
-        gcc=9.2.0-r3 \
+        gcc=9.2.0-r4 \
         libc-dev=0.7.2-r0 \
         libffi-dev=3.2.1-r6 \
         openssl-dev=1.1.1d-r3 && \
@@ -25,7 +25,7 @@ LABEL maintainer="Lucca Pessoa da Silva Matos - luccapsm@gmail.com" \
         org.label-schema.url="https://github.com/lpmatos" \
         org.label-schema.alpine="https://alpinelinux.org/" \
         org.label-schema.python="https://www.python.org/" \
-        org.label-schema.name="Corona API Tracker" 
+        org.label-schema.name="Corona Tracker" 
 
 ENV HOME=/usr/src/code \
     LANG=C.UTF-8 \
@@ -34,14 +34,14 @@ ENV HOME=/usr/src/code \
     PYTHONUNBUFFERED=1 \
     PYTHONUTF8=1 \
     TZ=America/Sao_Paulo \
-    LOG_PATH=/var/log/corona-api-tracker \
+    LOG_PATH=/var/log/coronatracker \
     LOG_FILE=file.log \
     LOG_LEVEL=DEBUG \
     LOGGER=Corona-API-Tracker-Logger \
     ENDPOINT_BING=https://www.bing.com/covid/data \
     ENDPOINT_REST_COUNTRIES=https://restcountries.eu/rest/v2/ \
     ENDPOINT_THE_TRACKER_VIRUS=https://thevirustracker.com/ \
-    TELEGRAM_TOKEN=
+    TELEGRAM_TOKEN=1125616254:
 
 RUN set -ex && \
     addgroup -g 1000 python && \

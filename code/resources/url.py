@@ -21,8 +21,8 @@ except ImportError:
 
 class URL:
 
-    @staticmethod
-    def url_validator(url: Text) -> bool:
+    @classmethod
+    def url_validator(cls, url: Text) -> bool:
         if isinstance(url, str):
             try:
                 result = urlparse(url)

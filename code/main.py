@@ -35,8 +35,6 @@ logger = Log(log_path, log_file, config.get_env("LOG_LEVEL"), config.get_env("LO
 
 bing = BingCorona(config.get_env("ENDPOINT_BING"), logger)
 
-telegram = TelegramBot(config.get_env("TELEGRAM_TOKEN"))
-
 # =============================================================================
 # MAIN
 # =============================================================================
@@ -82,5 +80,16 @@ if __name__ == "__main__":
     for key, value in enumerate(areas):
         print(f"{key} - {value}\n")
 
+    information = {
+        "total_cases_confirmed": total_cases_confirmed,
+        "total_cases_deaths": total_cases_deaths,
+        "total_cases_recovered": total_cases_recovered,
+        "day": day,
+        "hour": hour,
+    }
+
+    telegram = TelegramBot(config.get_env("TELEGRAM_TOKEN"), information)
+
     print("\npress CTRL + C to cancel.")
+    
     telegram.main()

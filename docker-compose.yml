@@ -11,15 +11,16 @@ version: "3.7"
 services:
 
 # =============================================================================
-# CORONA API TRACKER
+# CORONA TRACKER
 # =============================================================================
 
-  corona-api-tracker:
-    container_name: ${CONTAINER_NAME}
+  coronatracker:
+    container_name: coronatracker
     env_file: ./.env
     build:
       context: ./${PATH_DOCKERFILE}
       dockerfile: Dockerfile
+    restart: unless-stopped
     ports:
       - target: 5000
         published: 5000
@@ -30,12 +31,43 @@ services:
       options:
         max-size: "500k"
         max-file: "20"
+    links:
+      - mongo
+    depends_on:
+      - mongo
+    volumes:
+      - coronatracker:/var/log/coronatracker
     networks:
-      - corona-api-tracker
+      - coronatracker
 
 # =============================================================================
-# NETWORKS
+# MONGO DATABASE
+# =============================================================================
+
+  mongo:
+    image: mongo:4.2-bionic
+    container_name: mongo
+    environment:
+      MONGODB_DATA_DIR: /data/db
+      MONDODB_LOG_DIR: /dev/null
+    volumes:
+      - mongodata:/data/db
+    networks:
+      - coronatracker
+
+# =============================================================================
+# NETWORK
 # =============================================================================
 
 networks:
-  corona-api-tracker:
+  coronatracker:
+
+# =============================================================================
+# VOLUMES
+# =============================================================================
+
+volumes:
+  mongodata:
+    driver: local
+  coronatracker:
+    driver: local
