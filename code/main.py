@@ -14,6 +14,8 @@ from actions.bing import BingCorona
 from resources.date import DateTime
 from resources.coordenadas import Coordenadas
 
+from bot.telegram import TelegramBot
+
 import sys
 from colorama import init
 init(strip=not sys.stdout.isatty()) # strip colors if stdout is redirected
@@ -32,6 +34,8 @@ log_file = config.get_env("LOG_FILE") if config.get_env("LOG_FILE") else None
 logger = Log(log_path, log_file, config.get_env("LOG_LEVEL"), config.get_env("LOGGER")).logger
 
 bing = BingCorona(config.get_env("ENDPOINT_BING"), logger)
+
+telegram = TelegramBot(config.get_env("TELEGRAM_TOKEN"))
 
 # =============================================================================
 # MAIN
@@ -77,3 +81,6 @@ if __name__ == "__main__":
 
     for key, value in enumerate(areas):
         print(f"{key} - {value}\n")
+
+    print("\npress CTRL + C to cancel.")
+    telegram.main()

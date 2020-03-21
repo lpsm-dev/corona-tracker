@@ -33,9 +33,9 @@ class OS:
             print(f"Creating the directory {directory}")
             makedirs(directory)
         except OSError:
-            print(f"OSError in create the directory {directory} - {error}")
+            print(f"OSError in create the directory {directory}")
         except Exception as error:
-            print(f"Error general exception in create the directory {directory} - {error}")
+            print(f"Error general exception in create the directory {directory}")
 
     @classmethod
     def create_file(cls, file: Text) -> NoReturn:

@@ -40,13 +40,14 @@ ENV HOME=/usr/src/code \
     LOGGER=Corona-API-Tracker-Logger \
     ENDPOINT_BING=https://www.bing.com/covid/data \
     ENDPOINT_REST_COUNTRIES=https://restcountries.eu/rest/v2/ \
-    ENDPOINT_THE_TRACKER_VIRUS=https://thevirustracker.com/
+    ENDPOINT_THE_TRACKER_VIRUS=https://thevirustracker.com/ \
+    TELEGRAM_TOKEN=
 
 RUN set -ex && \
     addgroup -g 1000 python && \
     adduser -u 999 -G python -h ${HOME} -s /bin/sh -D python && \
     mkdir -p ${HOME} && mkdir -p {LOG_PATH} && \
-    chown -hR python:python ${HOME} && \
+    chown -hR python:python ${HOME} /var && \
     touch {LOG_PATH}/{LOG_FILE}
 
 RUN apk update && \

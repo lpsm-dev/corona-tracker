@@ -11,7 +11,7 @@ fi
 
 # Allow the container to be started with `--user`
 if [ "$1" = 'sh' -a "$(id -u)" = '0' ]; then
-	find . \! -user python -exec chown python '{}' +
+	find . \! -user python -exec chown python '{}' /var +
 	exec su-exec python "$0" "$@"
 fi
 

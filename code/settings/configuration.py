@@ -36,7 +36,8 @@ class Configuration(ExceptionDefault):
                         "LOGGER": self._get_env_value("LOGGER"),
                         "ENDPOINT_BING": self._get_env_value("ENDPOINT_BING"),
                         "ENDPOINT_REST_COUNTRIES": self._get_env_value("ENDPOINT_REST_COUNTRIES"),
-                        "ENDPOINT_THE_TRACKER_VIRUS": self._get_env_value("ENDPOINT_THE_TRACKER_VIRUS")
+                        "ENDPOINT_THE_TRACKER_VIRUS": self._get_env_value("ENDPOINT_THE_TRACKER_VIRUS"),
+                        "TELEGRAM_TOKEN": self._get_env_value("TELEGRAM_TOKEN")
                     }
 
     def _check_if_env_exist_in_dict_envs(self, env: Text) -> bool:

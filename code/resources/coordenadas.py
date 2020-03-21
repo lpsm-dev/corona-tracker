@@ -6,17 +6,17 @@
 # IMPORTS
 # =============================================================================
 
+from dataclasses import dataclass
 from typing import NoReturn, Text, Dict
 
 # =============================================================================
 # CLASS COORDENADAS
 # =============================================================================
 
-class Coordenadas():
-
-    def __init__(self, lat: float, long: float) -> NoReturn:
-        self._lat = lat 
-        self._long = long
+@dataclass(init=True, repr=True)
+class Coordenadas:
+    _lat: float
+    _long: float
 
     def serialize(self) -> Dict:
         return {
@@ -31,6 +31,3 @@ class Coordenadas():
     @property
     def long(self) -> Text:
         return self._long
-
-    def __str__(self) -> Text:
-        return f"lat: {self.lat} - long: {self.long}"
