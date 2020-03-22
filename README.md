@@ -1,6 +1,14 @@
 Corona API Tracker
 ============
 
+<p align="center">
+  <img src="/docs/images/COVID.jpg" width="90px" float="center"/>
+</p>
+<h1 align="center">COVID-19 Brazil API</h1>
+<p align="center">
+  <strong>Notificação de casos de doença pelo coronavírus 2019 (COVID-19) no Brasil e no Mundo</strong>
+</p>
+
 [![Open Source](https://badges.frapsoft.com/os/v1/open-source.svg?v=102)](https://github.com/lpmatos)
 
 The idea behind this project is the construction of a simple API that consumes data collected on the current situation of COVID-19 in the world, presenting, in addition to a simple view on the cases, a view with details referring to each region/country of the country according to the population quantity.

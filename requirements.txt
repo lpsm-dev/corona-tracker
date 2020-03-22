@@ -16,11 +16,11 @@ python-dateutil==2.8.1
 # TELEGRAM
 python-telegram-bot==12.4.2
 
-# DATABASE NOSQL MONGO
+# MONGO
 pymongo==3.10.1
 
 # GRAFICOS
 matplotlib==3.2.1
 
-# CACHE TOOLS
+# CACHE
 cachetools==4.0.0
