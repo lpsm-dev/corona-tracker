@@ -1,17 +1,15 @@
-Corona API Tracker
+Corona Tracker
 ============
+
+[![Open Source](https://badges.frapsoft.com/os/v1/open-source.svg?v=102)](https://github.com/lpmatos)
 
 <p align="center">
   <img src="/docs/images/COVID.jpg" width="500px" float="center"/>
 </p>
 <h1 align="center">COVID-19 Brazil API</h1>
 <p align="center">
-  <strong>Notificação de casos de doença pelo coronavírus 2019 (COVID-19) no Brasil e no Mundo</strong>
+  <strong>Project on coronavirus cases 2019 (COVID-19) in Brazil and in the World</strong>
 </p>
-
-[![Open Source](https://badges.frapsoft.com/os/v1/open-source.svg?v=102)](https://github.com/lpmatos)
-
-The idea behind this project is the construction of a simple API that consumes data collected on the current situation of COVID-19 in the world, presenting, in addition to a simple view on the cases, a view with details referring to each region/country of the country according to the population quantity.
 
 ## Copyright (c)
 
@@ -24,6 +22,44 @@ To use this repository you need to make a **git clone**:
 ```bash
 git clone --depth 1 https://github.com/lpmatos/corona-api-tracker.git -b master
 ```
+
+## Organization
+
+* **/code** in this folder we have the application.
+* **/docs** is the directory where we have all documentation files.
+* **CHANGELOG.md** is a versioning file usend to control development versions.
+* **docker-compose.yml** is the **Docker** container orchestrator.
+* **Dockerfile** is a file used to set up your **Docker** environment.
+* **Makefile** is a file containing a set of automation policies.
+* **README.md** is an optional file. A human-readable **README** file..
+* The files found in the project root are support files to others contexts.
+
+## Description
+
+The idea behind this project is the construction of a simple API that consumes data collected on the current situation of COVID-19 in the world, presenting, in addition to a simple view on the cases, a view with details referring to each region/country of the country according to the population quantity.
+
+## Pre-Requisites
+
+**Tools**
+:---:
+**Python**
+**Docker**
+**docker-compose**
+
+## Environment variables
+
+**Name**  |  **Description**
+:---:  |  :---:
+**LOG_PATH**  |  Just the Log Path
+**LOG_FILE**  |  Just the Log File
+**LOG_LEVEL**  |  Just the Log Level
+**LOGGER**  |  Just the Logger name
+
+## Built with
+
+- [Python](https://www.python.org/)
+- [Docker](https://docs.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/)
 
 ## How to contribute
 
