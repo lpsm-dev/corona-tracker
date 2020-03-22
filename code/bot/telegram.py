@@ -6,13 +6,24 @@
 # IMPORTS
 # =============================================================================
 
-from telegram.ext import Updater, CommandHandler, Filters, MessageHandler
+from telegram import ReplyKeyboardMarkup
+from telegram.ext import Updater, CommandHandler, Filters, MessageHandler, ConversationHandler
 
 import numpy as np
 import matplotlib.pyplot as plt
 
 import os
 
+from actions.github import get_brazil_information, parse_to_csv
+
+# =============================================================================
+# GLOBAL
+# =============================================================================
+
+information = get_brazil_information("total")
+
+CASOS_TOTAIS_BRASIL = parse_to_csv(information)
+        
 # =============================================================================
 # CLASS TELEGRAM BOT
 # =============================================================================
@@ -126,6 +137,58 @@ Opa, infelizmente não conseguimos gerar sua imagem..."""
 
 # =============================================================================
 
+    def brasil(self, bot, update):
+
+        data = self.data
+        brasil = data["brasil"]
+        total_cases_confirmed = brasil["totalConfirmed"]
+        total_cases_deaths = brasil["totalDeaths"]
+        total_cases_recovered = brasil["totalRecovered"]
+        last_update = brasil["lastUpdated"]
+
+        chat_id = update.message.chat.id
+
+        total = CASOS_TOTAIS_BRASIL[0]
+        casos_totais = total["totalCases"]
+        casos_totais_ms = total["totalCasesMS"]
+        casos_totais_nao_confirmados_ms = total["notConfirmedByMS"]
+        mortes = total["deaths"]
+        fonte = total["URL"]
+
+        brasil_information = f"""
+O status do COVID-19 no Brasil: 
+
+Casos Confirmados: {total_cases_confirmed}
+Casos Recuperados: {total_cases_recovered}
+Casos Fatais: {total_cases_deaths}
+Casos Ativos: {total_cases_confirmed - total_cases_deaths - total_cases_recovered}
+
+Atualização: {last_update}
+
+Fonte: https://www.bing.com/covid/data
+
+===============================================
+
+Número de casos confirmados de COVID-19 no Brasil segundo o Ministério de Saúde.
+
+Inclui os dados confirmados pela plataforma oficial do Ministério da Saúde e demais noticiados pela secretarias de saúde de cada estado.
+
+Casos Totais: {casos_totais}
+Casos Totais Ministério de Saúde: {casos_totais_ms}
+Casos não confirmados pelo Ministério de Saúde: {casos_totais_nao_confirmados_ms}
+Casos Fatais: {mortes}
+
+Fonte: {fonte}
+"""
+        bot.send_message(chat_id=chat_id, text=brasil_information)
+
+# =============================================================================
+
+    def estados(self, bot, update):
+        pass
+
+# =============================================================================
+
     def unknown(self, bot, update):
         response_message = "VAI TOMAR NO CU BABU"
         bot.send_message(
@@ -146,6 +209,10 @@ Opa, infelizmente não conseguimos gerar sua imagem..."""
 
         dispatcher.add_handler(
             CommandHandler('world', self.world)
+        )
+
+        dispatcher.add_handler(
+            CommandHandler('brasil', self.brasil)
         )
 
         dispatcher.add_handler(

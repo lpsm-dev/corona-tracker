@@ -21,3 +21,6 @@ pymongo==3.10.1
 
 # GRAFICOS
 matplotlib==3.2.1
+
+# CACHE TOOLS
+cachetools==4.0.0

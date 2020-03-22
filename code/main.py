@@ -80,12 +80,15 @@ if __name__ == "__main__":
     for key, value in enumerate(areas):
         print(f"{key} - {value}\n")
 
+    brasil = areas[20]
+
     information = {
         "total_cases_confirmed": total_cases_confirmed,
         "total_cases_deaths": total_cases_deaths,
         "total_cases_recovered": total_cases_recovered,
         "day": day,
         "hour": hour,
+        "brasil": brasil
     }
 
     telegram = TelegramBot(config.get_env("TELEGRAM_TOKEN"), information, logger)
