@@ -8,7 +8,7 @@ Corona Tracker
 </p>
 <h1 align="center">COVID-19 Brazil API</h1>
 <p align="center">
-  <strong>Project on coronavirus cases 2019 (COVID-19) in Brazil and in the World</strong>
+  <strong>Project coronavirus cases 2019 (COVID-19) in Brazil and in the World</strong>
 </p>
 
 ## Copyright (c)
