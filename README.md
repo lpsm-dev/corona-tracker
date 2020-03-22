@@ -2,7 +2,7 @@ Corona API Tracker
 ============
 
 <p align="center">
-  <img src="/docs/images/COVID.jpg" width="90px" float="center"/>
+  <img src="/docs/images/COVID.jpg" width="500px" float="center"/>
 </p>
 <h1 align="center">COVID-19 Brazil API</h1>
 <p align="center">
