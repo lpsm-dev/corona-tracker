@@ -15,15 +15,38 @@ services:
 # =============================================================================
 
   coronatracker:
-    container_name: coronatracker
+    container_name: ${CONTAINER_NAME}
     env_file: ./.env
     build:
       context: ./${PATH_DOCKERFILE}
       dockerfile: Dockerfile
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "500k"
+        max-file: "20"
+    links:
+      - cache
+    depends_on:
+      - cache
+    volumes:
+      - coronatracker:/var/log/coronatracker
+    networks:
+      - coronatracker
+
+# =============================================================================
+# REDIS CACHE
+# =============================================================================
+
+  cache:
+    image: redis:alpine3.11
+    container_name: cache
+    command: redis-server --requirepass corona
+    restart: unless-stopped
     ports:
-      - target: 5000
-        published: 5000
+      - target: 6379
+        published: 6379
         protocol: tcp
         mode: host
     logging:
@@ -31,27 +54,8 @@ services:
       options:
         max-size: "500k"
         max-file: "20"
-    links:
-      - mongo
-    depends_on:
-      - mongo
     volumes:
-      - coronatracker:/var/log/coronatracker
-    networks:
-      - coronatracker
-
-# =============================================================================
-# MONGO DATABASE
-# =============================================================================
-
-  mongo:
-    image: mongo:4.2-bionic
-    container_name: mongo
-    environment:
-      MONGODB_DATA_DIR: /data/db
-      MONDODB_LOG_DIR: /dev/null
-    volumes:
-      - mongodata:/data/db
+      - cache:/var/lib/redis
     networks:
       - coronatracker
 
@@ -67,7 +71,7 @@ networks:
 # =============================================================================
 
 volumes:
-  mongodata:
+  cache:
     driver: local
   coronatracker:
     driver: local

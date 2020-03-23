@@ -10,10 +10,10 @@ from os import path, makedirs
 from typing import NoReturn, Text
 
 # =============================================================================
-# CLASS - OS
+# CLASS - OSYSTEM
 # =============================================================================
 
-class OS:
+class OSystem:
 
     @classmethod
     def check_if_is_dir(cls, directory: Text) -> bool:

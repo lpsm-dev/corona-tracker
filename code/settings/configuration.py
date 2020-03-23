@@ -9,16 +9,7 @@
 import os
 from os import environ
 from typing import NoReturn, Text
-
-# =============================================================================
-# CLASS - EXCEPTION DEFAULT
-# =============================================================================
-
-class ExceptionDefault(object):
-
-    @staticmethod
-    def raise_exception(exception: Text) -> NoReturn:
-        raise exception
+from settings.exception import ExceptionDefault
 
 # =============================================================================
 # CLASS - CONFIGURATION

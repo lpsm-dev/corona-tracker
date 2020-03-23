@@ -77,8 +77,8 @@ if __name__ == "__main__":
 
     areas = data["areas"]
 
-    for key, value in enumerate(areas):
-        print(f"{key} - {value}\n")
+    #for key, value in enumerate(areas):
+        #print(f"{key} - {value}\n")
 
     brasil = areas[20]
 

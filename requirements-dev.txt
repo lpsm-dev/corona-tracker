@@ -27,6 +27,3 @@ cachetools==4.0.0
 
 # BS4
 beautifulsoup4==4.8.2
-
-# TRANSLATE
-googletrans==2.4.0

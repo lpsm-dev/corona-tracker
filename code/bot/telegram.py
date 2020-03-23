@@ -6,8 +6,10 @@
 # IMPORTS
 # =============================================================================
 
+import telegram
 from telegram import ReplyKeyboardMarkup
-from telegram.ext import Updater, CommandHandler, Filters, MessageHandler, ConversationHandler
+from telegram.ext import Updater, CommandHandler, Filters, MessageHandler, ConversationHandler, CallbackQueryHandler
+from telegram.ext.dispatcher import run_async
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -15,6 +17,12 @@ import matplotlib.pyplot as plt
 import os
 
 from actions.github import get_brazil_information, parse_to_csv
+
+from constants.conversations import INFO, FAQ, ABOUT, DEV
+
+from scrapy.who import WorldHealthOrganization
+
+from typing import NoReturn
 
 # =============================================================================
 # GLOBAL
@@ -123,6 +131,8 @@ Fonte: https://www.bing.com/covid/data
 
         plt.close() 
 
+# =============================================================================
+
     def image(self, bot, update):
         chat_id = update.message.chat.id
         msg_id = update.message.message_id
@@ -167,7 +177,7 @@ Atualização: {last_update}
 
 Fonte: https://www.bing.com/covid/data
 
-===============================================
+=================
 
 Número de casos confirmados de COVID-19 no Brasil segundo o Ministério de Saúde.
 
@@ -184,13 +194,57 @@ Fonte: {fonte}
 
 # =============================================================================
 
-    def estados(self, bot, update):
-        pass
+    @run_async
+    def info(self, bot, update):
+        chat_id = update.message.chat.id
+        info_message = INFO
+        bot.send_message(chat_id=chat_id, text=info_message)
+
+# =============================================================================
+
+    @run_async
+    def faq(self, bot, update):
+        chat_id = update.message.chat.id
+        info_message = FAQ
+        bot.send_message(chat_id=chat_id, text=info_message)
+
+# =============================================================================
+
+    @run_async
+    def about(self, bot, update):
+        chat_id = update.message.chat.id
+        info_message = ABOUT
+        bot.send_message(chat_id=chat_id, text=info_message)
+
+# =============================================================================
+
+    @run_async
+    def dev(self, bot, update):
+        chat_id = update.message.chat.id
+        info_message = DEV
+        bot.send_message(chat_id=chat_id, text=info_message)
+
+# =============================================================================
+
+    def questions(self, bot, update):
+        who = WorldHealthOrganization()
+        questions = who.soup_list_questions()
+        keyboard = [[telegram.KeyboardButton(question)] for index, question in enumerate(questions, start=1)]
+        keyboard_markup = telegram.ReplyKeyboardMarkup(keyboard)
+        bot.send_message(chat_id=update.message.chat_id,
+                        text="COVID-19 Questions",
+                        reply_markup=keyboard_markup)
+
+# =============================================================================
+
+    def error(self, update, context):
+        """Log Errors caused by Updates."""
+        self.logger.warning('Update "%s" caused error "%s"', update, context.error)
 
 # =============================================================================
 
     def unknown(self, bot, update):
-        response_message = "VAI TOMAR NO CU BABU"
+        response_message = "🐒 Melhoras Babuzinho 🐒"
         bot.send_message(
             chat_id=update.message.chat_id,
             text=response_message)
@@ -202,26 +256,28 @@ Fonte: {fonte}
         updater = Updater(token=self.token)
 
         dispatcher = updater.dispatcher
+
+        dispatcher.add_handler(CommandHandler("info", self.info))
+
+        dispatcher.add_handler(CommandHandler("faq", self.faq))
+
+        dispatcher.add_handler(CommandHandler("about", self.about))
+
+        dispatcher.add_handler(CommandHandler("dev", self.dev))
         
-        dispatcher.add_handler(
-            CommandHandler('start', self.start)
-        )
+        dispatcher.add_handler(CommandHandler("start", self.start))
 
-        dispatcher.add_handler(
-            CommandHandler('world', self.world)
-        )
+        dispatcher.add_handler(CommandHandler("world", self.world))
 
-        dispatcher.add_handler(
-            CommandHandler('brasil', self.brasil)
-        )
+        dispatcher.add_handler(CommandHandler("brasil", self.brasil))
 
-        dispatcher.add_handler(
-            CommandHandler('image', self.image)
-        )
+        dispatcher.add_handler(CommandHandler("image", self.image))
 
-        dispatcher.add_handler(
-            MessageHandler(Filters.command, self.unknown)
-        )
+        dispatcher.add_handler(CommandHandler("questions", self.questions))
+
+        dispatcher.add_handler(MessageHandler(Filters.command, self.unknown))
+
+        dispatcher.add_error_handler(self.error)
 
         updater.start_polling()
 

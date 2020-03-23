@@ -64,10 +64,7 @@ python-packages:
 
 install: system-packages python-packages
 
-tests:
-	python manage.py test
-
 run:
-	python manage.py run
+	python code/python.py
 
-all: clean install tests run
+all: clean install run
