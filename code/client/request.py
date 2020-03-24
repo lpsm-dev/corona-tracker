@@ -6,15 +6,13 @@
 # IMPORTS
 # =============================================================================
 
-from resources.url import URL
-from typing import Text, NoReturn, Callable
-from client.exception import URLException, InvalidURL, RequestGetException, RequestGetStatusException
-
 import requests
+from resources.url import URL
+from json import JSONDecodeError
 from requests.adapters import HTTPAdapter
+from typing import Text, NoReturn, Callable
 from requests.packages.urllib3.util.retry import Retry
-
-import json
+from client.exception import URLException, InvalidURL, RequestGetException, RequestGetStatusException
 
 # =============================================================================
 # CLASS - REQUEST RESPONSE
@@ -83,7 +81,7 @@ class Request(URL):
                         "status": True,
                         "data": response
                     }
-                except json.JSONDecodeError:
+                except JSONDecodeError:
                     response = response.reason
                     self.logger.error(f"Error get json data")
                     return {
@@ -118,5 +116,5 @@ class Request(URL):
     def __str__(self) -> Text:
         return f"""
 ┌──────────────────┬─────────────────────────────────
-│ Requests URL:    │ {self._url if self._url else None}
+│ URL:             │ {self._url if self._url else None}
 └──────────────────┴─────────────────────────────────"""

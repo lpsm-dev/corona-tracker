@@ -6,23 +6,22 @@
 # IMPORTS
 # =============================================================================
 
-import telegram
-from telegram import ReplyKeyboardMarkup
-from telegram.ext import Updater, CommandHandler, Filters, MessageHandler, ConversationHandler, CallbackQueryHandler
-from telegram.ext.dispatcher import run_async
-
 import numpy as np
+from utils.os import OSystem
 import matplotlib.pyplot as plt
-
-import os
-
-from actions.github import get_brazil_information, parse_to_csv
-
-from constants.conversations import INFO, FAQ, ABOUT, DEV
-
+from telegram.ext.dispatcher import run_async
 from scrapy.who import WorldHealthOrganization
+from typing import NoReturn, Text, Dict, Callable
+from actions.github import get_brazil_information, parse_to_csv
+from telegram import (ReplyKeyboardMarkup, InlineKeyboardButton, 
+                                InlineKeyboardMarkup)
+from telegram.ext import (Updater, CommandHandler, Filters, 
+                                MessageHandler, CallbackQueryHandler)
+from constants.conversations import (START, REGISTER, HELP, INFO, ABOUT, 
+                                        TRANSMISSION, SINTOMAS, PREVENTION, 
+                                            TRATAMENTO, FAQ, DEV, UNKNOWN)
 
-from typing import NoReturn
+from database.database import RedisController
 
 # =============================================================================
 # GLOBAL
@@ -38,32 +37,17 @@ CASOS_TOTAIS_BRASIL = parse_to_csv(information)
 
 class TelegramBot:
 
-    def __init__(self, token, data, logger):
+    def __init__(self, token: Text, data: Dict, logger: Callable) -> NoReturn:
         self.token = token
         self.data = data
         self._logger = logger
+        self.os = OSystem()
+        self.redis = RedisController()
 
 # =============================================================================
 
-    def start(self, bot, update):
-        chat_id = update.message.chat.id
-        msg_id = update.message.message_id
-        user = update.message.from_user.username
-        bot_welcome = f"""
-Opa {user}! Tudo tranquilo??
-Bem vindo ao Bot COVID19-Tracker!
-
-Tenho como objetivo a coleta e exibição de informações sobre o Covid-19 ao redor do mundo e no Brasil.
-
-Nossa principal meta é atingir o maior número de pessoas com o status dos casos e alertar para que todos fiquem em casa e respeitem a quarentena.
-
-Para contribuir acesse o repositório desse código - GitHub: https://github.com/lpmatos/corona-tracker
-"""
-        bot.send_message(chat_id=chat_id, text=bot_welcome)
-
-# =============================================================================
-
-    def world(self, bot, update):
+    def world(self, update, context):
+        bot = context.bot
         chat_id = update.message.chat.id
         msg_id = update.message.message_id
         user = update.message.from_user.username
@@ -92,48 +76,34 @@ Fonte: https://www.bing.com/covid/data
 
     def create_image(self):
 
-        if not os.path.exists("/usr/src/code/images"):
-            os.mkdir("/usr/src/code/images")
+        if not self.os.check_if_is_dir("/usr/src/code/images"):
+            self.os.create_directory("/usr/src/code/images")
 
         cases=[u"CONFIRMADOS", u"RECUPERADOS", u"MORTES", u"ATIVOS"]
-
         data = self.data
-
         total_cases_confirmed = data["total_cases_confirmed"]
         total_cases_deaths = data["total_cases_deaths"]
         total_cases_recovered = data["total_cases_recovered"]
         ativos = total_cases_confirmed - total_cases_deaths - total_cases_recovered
-
         info = [int(total_cases_confirmed), int(total_cases_deaths), int(total_cases_recovered), int(ativos)]
-
         fig, ax = plt.subplots()
-
         width = 0.75
-
         ind = np.arange(len(info))
-
         ax.barh(ind, info, width, color="blue")
-
         ax.set_yticks(ind + width / 2)
-
         for i, v in enumerate(info):
             ax.text(v, i, " " + str(v), color="blue", va="center", fontweight="bold")
-
         ax.set_yticklabels(cases, minor=False)
-
         plt.title("Casos Coronga Virus no mundo")
-
         plt.xlabel("Quantidade", fontsize=5)
-
         plt.ylabel("Casos", fontsize=5)  
-
         plt.savefig("/usr/src/code/images/image.png", dpi=300, format="png", bbox_inches="tight")
-
         plt.close() 
 
 # =============================================================================
 
-    def image(self, bot, update):
+    def image(self, update, context):
+        bot = context.bot
         chat_id = update.message.chat.id
         msg_id = update.message.message_id
         message = f"""
@@ -147,24 +117,21 @@ Opa, infelizmente não conseguimos gerar sua imagem..."""
 
 # =============================================================================
 
-    def brasil(self, bot, update):
-
+    def brazil(self, update, context):
+        bot = context.bot
         data = self.data
         brasil = data["brasil"]
         total_cases_confirmed = brasil["totalConfirmed"]
         total_cases_deaths = brasil["totalDeaths"]
         total_cases_recovered = brasil["totalRecovered"]
         last_update = brasil["lastUpdated"]
-
         chat_id = update.message.chat.id
-
         total = CASOS_TOTAIS_BRASIL[0]
         casos_totais = total["totalCases"]
         casos_totais_ms = total["totalCasesMS"]
         casos_totais_nao_confirmados_ms = total["notConfirmedByMS"]
         mortes = total["deaths"]
         fonte = total["URL"]
-
         brasil_information = f"""
 O status do COVID-19 no Brasil: 
 
@@ -194,46 +161,84 @@ Fonte: {fonte}
 
 # =============================================================================
 
-    @run_async
-    def info(self, bot, update):
-        chat_id = update.message.chat.id
-        info_message = INFO
-        bot.send_message(chat_id=chat_id, text=info_message)
-
-# =============================================================================
-
-    @run_async
-    def faq(self, bot, update):
-        chat_id = update.message.chat.id
-        info_message = FAQ
-        bot.send_message(chat_id=chat_id, text=info_message)
-
-# =============================================================================
-
-    @run_async
-    def about(self, bot, update):
-        chat_id = update.message.chat.id
-        info_message = ABOUT
-        bot.send_message(chat_id=chat_id, text=info_message)
-
-# =============================================================================
-
-    @run_async
-    def dev(self, bot, update):
-        chat_id = update.message.chat.id
-        info_message = DEV
-        bot.send_message(chat_id=chat_id, text=info_message)
-
-# =============================================================================
-
-    def questions(self, bot, update):
+    """def questions(self, bot, update):
         who = WorldHealthOrganization()
         questions = who.soup_list_questions()
-        keyboard = [[telegram.KeyboardButton(question)] for index, question in enumerate(questions, start=1)]
-        keyboard_markup = telegram.ReplyKeyboardMarkup(keyboard)
+        keyboard = [[KeyboardButton(question)] for index, question in enumerate(questions, start=1)]
+        keyboard_markup = ReplyKeyboardMarkup(keyboard)
         bot.send_message(chat_id=update.message.chat_id,
                         text="COVID-19 Questions",
-                        reply_markup=keyboard_markup)
+                        reply_markup=keyboard_markup)"""
+
+# =============================================================================
+
+    @run_async
+    def start(self, update, context):
+        bot = context.bot
+        bot.send_message(chat_id=update.message.chat.id, text=START)
+
+# =============================================================================
+
+    @run_async
+    def register(self, update, context):
+        chat_id = update.message.chat.id
+        bot = context.bot
+        name = update.message.from_user.first_name
+        try:
+            self.redis.set(chat_id, name)
+            self.logger.info(self.redis.all_keys())
+        except Exception as error:
+            print(error)
+        bot.send_message(chat_id=chat_id, text=REGISTER)
+
+# =============================================================================
+
+    @run_async
+    def help(self, update, context):
+        bot = context.bot
+        bot.send_message(chat_id=update.message.chat.id, text=HELP)
+
+# =============================================================================
+
+    @run_async
+    def users(self, update, context):
+        bot = context.bot
+        try:
+            quantidade = len(self.redis.all_keys())
+        except Exception as error:
+            print(error)
+        message = f"""
+✅ Atualmente temos {quantidade} usuários cadastrados!
+        """
+        bot.send_message(chat_id=update.message.chat.id, text=message)
+
+# =============================================================================
+
+    def info(self, update, context):
+        user = update.message.from_user
+        self.logger.info("User %s started the conversation to get Infortions About COVID-19.", user.first_name)
+        keyboard = [[InlineKeyboardButton("💻 Dev", callback_data="0"),
+                    InlineKeyboardButton("🧪 Tratamento", callback_data="1")],
+                    [InlineKeyboardButton("📈 Prevenção", callback_data="2"),
+                    InlineKeyboardButton("📋 Sintomas", callback_data="3")],
+                    [InlineKeyboardButton("📻 Transmissão", callback_data="4"),
+                    InlineKeyboardButton("🌐 Sobre", callback_data="5")]]
+        keyboard_markup = InlineKeyboardMarkup(keyboard)
+        update.message.reply_text(text=INFO, reply_markup=keyboard_markup)
+
+# =============================================================================
+    
+    def button_info(self, update, context):
+        query, bot = update.callback_query, context.bot
+        data, information = int(query.data), [DEV, TRATAMENTO, PREVENTION, SINTOMAS, TRANSMISSION, ABOUT]
+        bot.send_message(chat_id=query.message.chat_id,
+                    message_id=query.message.message_id, text=information[data])
+        return CallbackQueryHandler.END
+
+# =============================================================================
+
+    def unknown(self, update, context):
+        bot.send_message(chat_id=update.message.chat_id, text=UNKNOWN)
 
 # =============================================================================
 
@@ -243,37 +248,31 @@ Fonte: {fonte}
 
 # =============================================================================
 
-    def unknown(self, bot, update):
-        response_message = "🐒 Melhoras Babuzinho 🐒"
-        bot.send_message(
-            chat_id=update.message.chat_id,
-            text=response_message)
-
-# =============================================================================
-
     def main(self):
 
-        updater = Updater(token=self.token)
+        updater = Updater(token=self.token, use_context=True)
 
         dispatcher = updater.dispatcher
 
-        dispatcher.add_handler(CommandHandler("info", self.info))
-
-        dispatcher.add_handler(CommandHandler("faq", self.faq))
-
-        dispatcher.add_handler(CommandHandler("about", self.about))
-
-        dispatcher.add_handler(CommandHandler("dev", self.dev))
-        
         dispatcher.add_handler(CommandHandler("start", self.start))
+
+        dispatcher.add_handler(CommandHandler("register", self.register))
+
+        dispatcher.add_handler(CommandHandler("help", self.help))
+
+        dispatcher.add_handler(CommandHandler("users", self.users))
 
         dispatcher.add_handler(CommandHandler("world", self.world))
 
-        dispatcher.add_handler(CommandHandler("brasil", self.brasil))
+        dispatcher.add_handler(CommandHandler("brazil", self.brazil))
 
         dispatcher.add_handler(CommandHandler("image", self.image))
 
-        dispatcher.add_handler(CommandHandler("questions", self.questions))
+        dispatcher.add_handler(CommandHandler("info", self.info))
+
+        dispatcher.add_handler(CallbackQueryHandler(self.button_info))
+
+        dispatcher.add_handler(CommandHandler("help", self.help))
 
         dispatcher.add_handler(MessageHandler(Filters.command, self.unknown))
 
@@ -282,6 +281,8 @@ Fonte: {fonte}
         updater.start_polling()
 
         updater.idle()
+
+# =============================================================================
 
     @property
     def logger(self):

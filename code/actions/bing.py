@@ -36,5 +36,5 @@ class BingCorona(Request):
     def __str__(self) -> Text:
         return f"""
 ┌──────────────────┬─────────────────────────────────
-│ Bing Endpoint:   │ {self._endpoint if self._endpoint else None}
+│ Endpoint:        │ {self._endpoint if self._endpoint else None}
 └──────────────────┴─────────────────────────────────"""

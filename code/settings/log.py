@@ -6,13 +6,11 @@
 # IMPORTS
 # =============================================================================
 
-import sys
 import logging
 import coloredlogs
-import logging.config
 from utils.os import OSystem
 from typing import NoReturn, Text
-from pythonjsonlogger import jsonlogger
+from settings.handlers import BaseFileHandler, ContextHandler
 
 # =============================================================================
 # CLASS - LOG
@@ -40,9 +38,7 @@ class Log(OSystem):
 
         self._base_configuration_to_log_colored()
 
-        self._logger.addHandler(self._base_configuration_log_file_handler())
-        
-        #self._logger.addHandler(self._base_configuration_log_stream_handler())
+        self._logger.addHandler(ContextHandler(BaseFileHandler()).get_handler(self._log_file, self._log_level, self.formatter))
 
     def _check_if_log_path_and_log_file_exist(self) -> NoReturn:
         if self.check_if_is_dir(self.log_path):
@@ -60,18 +56,6 @@ class Log(OSystem):
                             logger=self.logger,
                             fmt=self.formatter,
                             milliseconds=True)
-
-    def _base_configuration_log_file_handler(self) -> logging.FileHandler:
-        file_handler = logging.FileHandler(filename=self.log_file)
-        file_handler.setLevel(self.log_level)
-        file_handler.setFormatter(jsonlogger.JsonFormatter(self.formatter))
-        return file_handler
-
-    def _base_configuration_log_stream_handler(self) -> logging.StreamHandler:
-        stream_handler = logging.StreamHandler(sys.stdout)
-        stream_handler.setLevel(self.log_level)
-        stream_handler.setFormatter(jsonlogger.JsonFormatter(self.formatter))
-        return stream_handler
 
     @property
     def log_path(self) -> Text:

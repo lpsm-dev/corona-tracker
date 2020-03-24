@@ -9,3 +9,76 @@ settings:
   - users
   - dev
   
+🚀 Get worldwide Coronavirus disease (COVID-19) reporting
+🤯 Active daily reporting of your country's COVID-19 statistics
+🇺🇸 Get US States data for Coronavirus disease reports across the US
+🗃️ Data: Country, Cases, Deaths, Recovered, Active, Critical, Per Million
+📟 Sort: cases,cases-today,deaths,deaths-today,recovered,active,critical,per-million
+
+# Display data for all countries.
+corona
+
+# Display data for all countries in single color.
+corona --xcolor
+
+# Alias: Display data for all countries in single color.
+corona -x
+
+# Display data for given country.
+corona <countryName>
+
+# Display data for given country i.e. China.
+corona china
+
+# Display data for given country i.e. USA.
+corona usa
+
+# Display data for all the US states.
+corona states
+
+# Display states data sorted by active cases.
+corona states --sort active
+
+# Display states data sorted by Cases today.
+corona states -s cases-today
+
+# Sort data by type
+corona --sort country
+corona --s cases
+
+# All sorting parameters.
+corona -s country
+corona -s cases
+corona -s cases-today
+corona -s deaths
+corona -s deaths-today
+corona -s recovered
+corona -s active
+corona -s critical
+corona -s per-million
+
+# Display the help data.
+corona help
+corona --help
+
+_________             .__    ._______ ________          _________ .____    .___ 
+\_   ___ \  _______  _|__| __| _/_   /   __   \         \_   ___ \|    |   |   |
+/    \  \/ /  _ \  \/ /  |/ __ | |   \____    /  ______ /    \  \/|    |   |   |
+\     \___(  <_> )   /|  / /_/ | |   |  /    /  /_____/ \     \___|    |___|   |
+\______  /\____/ \_/ |__\____ | |___| /____/            \______  /_______ \___|
+       \/                    \/                                \/        \/        
+       
+Corona Virus (Covid-19) statistics cli.
+
+MIT License
+Copyright (c) 2020 Garry Lachman
+https://github.com/garrylachman/covid19-cli
+
+Options:
+ -c, --country     Specific Country (actual data + historical)
+ -l, --list-all    List all countries
+ -s, --sort        Sort countries list by key (country|cases|active|critical|deaths|recovered|todayCases|todayDeaths|casesPerOneMillion)
+ -i, --historical  List all countries historical trend chart 
+ -h, --help        Display this help and exit
+ -n, --no-banner   Hides "Covid19-CLI" banner
+     --version     Output version information and exit

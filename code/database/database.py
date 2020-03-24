@@ -11,16 +11,16 @@ from typing import NoReturn, Text, Callable, Dict
 from redis import ConnectionPool, Redis, ConnectionError
 
 # =============================================================================
-# CLASS - SINGLETON 
+# CLASS - SINGLETON REDIS
 # =============================================================================
 
-class Singleton(type):
+class SingletonRedis(type):
 
     _instances = {}
 
     def __call__(cls, *args, **kwargs) -> Callable:
         if cls not in cls._instances:
-            cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
+            cls._instances[cls] = super(SingletonRedis, cls).__call__(*args, **kwargs)
         return cls._instances[cls]
 
 # =============================================================================
@@ -28,12 +28,12 @@ class Singleton(type):
 # =============================================================================
 
 @dataclass(init=True, repr=True, eq=False, order=False, unsafe_hash=False, frozen=False)
-class BaseRedis(metaclass=Singleton):
+class BaseRedis(metaclass=SingletonRedis):
+
     _host: str = field(repr=True, default="cache")
     _port: int = field(repr=True, default=6379)
     _database: str = field(repr=True, default="")
-    _password: str = field(repr=False, default="Redis2019!")
-    charset: str = field(repr=True, default="utf-8")
+    _password: str = field(repr=False, default="corona")
 
     @property
     def host(self) -> Text:
@@ -54,9 +54,9 @@ class BaseRedis(metaclass=Singleton):
     @property
     def pool(self) -> ConnectionPool:
         if self.database:
-            return ConnectionPool(host=self.host, port=self.port, password=self.password, database=self.database, charset=self.charset)
+            return ConnectionPool(host=self.host, port=self.port, password=self.password, database=self.database)
         else:
-            return ConnectionPool(host=self.host, port=self.port, password=self.password, charset=self.charset)  
+            return ConnectionPool(host=self.host, port=self.port, password=self.password)  
 
 # =============================================================================
 # CLASS - REDIS CONTROLLER
@@ -87,17 +87,18 @@ class RedisController(BaseRedis):
 
     def lpush(self, name, values) -> NoReturn:
         self.conn.lpush(name, values)
+
+    def rpush(self, key, seq) -> NoReturn:
+        self.conn.rpush(key, *seq)
         
     def lrange(self, name, start, end):
         return self.conn.lrange(name, start, end)
 
+    def all_keys(self):
+        return self.conn.keys("*")
+
     @property
     def conn(self) -> Redis:
-        """
-        Se esse objeto não tiver um atributo de conexão, então retornamos uma conexão.
-
-        O método hasattr() retornará true se um objeto tiver o atributo nomeado especificado e false se não tiver.
-        """
         if not hasattr(self, "_conn"):
             self.get_redis_connection()
         return self._conn

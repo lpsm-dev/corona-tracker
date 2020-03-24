@@ -6,7 +6,6 @@
 # IMPORTS
 # =============================================================================
 
-import os
 from os import environ
 from typing import NoReturn, Text
 from settings.exception import ExceptionDefault
