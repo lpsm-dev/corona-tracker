@@ -10,17 +10,17 @@ import sys
 import logging
 import coloredlogs
 import logging.config
-from utils.os import OS
+from utils.os import OSystem
 from typing import NoReturn, Text
 from pythonjsonlogger import jsonlogger
 
 # =============================================================================
 # CLASS - LOG
 #
-# THIS CLASS HAVE A INHERITANCE WITH OS CLASS
+# THIS CLASS HAVE A INHERITANCE WITH OSYSTEM CLASS
 # =============================================================================
 
-class Log(OS):
+class Log(OSystem):
 
     def __init__(self, log_path: Text, log_file: Text, log_level: Text, logger_name: Text) -> NoReturn:
 
