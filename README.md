@@ -232,6 +232,37 @@ Hey!! If you like this project or if you find some bugs feel free to contact me 
 
 Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
 
+## Links References:
+
+* Projects:
+    * https://github.com/pomber/covid19
+    * https://github.com/Doc-McCoy/bot-corona-tracker
+
+* Datasets:
+    * https://github.com/CSSEGISandData/COVID-19
+
+* APIs:
+    * https://restcountries.eu/rest/v2/
+    * https://www.bing.com/covid/data
+    * https://thevirustracker.com/api
+
+* Strategys:
+    * https://blog.realkinetic.com/building-minimal-docker-containers-for-python-applications-37d0272c52f3
+
+## Get to Know
+
+| Link  | Description  |
+|:------|:-------------|
+| [Coronavirus](https://www.who.int/health-topics/coronavirus) | World Health Organization. |
+| [Novel coronavirus (COVID-19)](https://www.who.int/emergencies/diseases/novel-coronavirus-2019) | World Health Organization. |
+
+## Current Status
+
+| Link  | Description  |
+|:------|:-------------|
+| [WHO](https://www.who.int/emergencies/diseases/novel-coronavirus-2019) | World Health Orginization. |
+| [CDC](https://www.cdc.gov/coronavirus/2019-ncov/about/index.html) | Center for Disease control. |
+
 ## Contributors ✨
 
 <table>
@@ -251,20 +282,3 @@ Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
 ## Project Status
 
 * 🔛 In production
-
-## Links References:
-
-* Projects:
-    * https://github.com/pomber/covid19
-    * https://github.com/Doc-McCoy/bot-corona-tracker
-
-* Datasets:
-    * https://github.com/CSSEGISandData/COVID-19
-
-* APIs:
-    * https://restcountries.eu/rest/v2/
-    * https://www.bing.com/covid/data
-    * https://thevirustracker.com/api
-
-* Strategys:
-    * https://blog.realkinetic.com/building-minimal-docker-containers-for-python-applications-37d0272c52f3

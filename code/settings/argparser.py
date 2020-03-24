@@ -41,6 +41,9 @@ class Arguments:
         self._parser.add_argument("-bot", "--bot",
                                 action="store_true",
                                 help="Enable Bot Telegram")
+        self._parser.add_argument("-v", "--version",
+                                action="store_true",
+                                help="COVID-19 CLI Version")
 
     def _parser_args(self) -> argparse.ArgumentParser.parse_args:
         return self._parser.parse_args()

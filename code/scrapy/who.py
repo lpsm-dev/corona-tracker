@@ -13,7 +13,7 @@ from typing import List, Dict, Text
 from dataclasses import dataclass, field
 
 # =============================================================================
-# CLASS
+# CLASS - WORLD HEALTH ORGANIZATION
 # =============================================================================
 
 @dataclass(init=False, repr=True, eq=False, order=False, unsafe_hash=False, frozen=False)
