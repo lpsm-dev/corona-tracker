@@ -214,24 +214,6 @@ git push origin master
 
 - Implement country information search using restcountries API.
 
-## Contacts
-
-Hey!! If you like this project or if you find some bugs feel free to contact me in my channels:
-
-* **Email**: luccapsm@gmail.com
-* **Linkedin**: www.linkedin.com/in/lucca-pessoa-4abb71138/
-
-[![Facebook](https://github.frapsoft.com/social/facebook.png)](https://www.facebook.com/lucca.pessoa.9)
-[![Github](https://github.frapsoft.com/social/github.png)](https://github.com/lpmatos)
-
-## Versioning
-
-- [CHANGELOG](CHANGELOG.md)
-
-## License
-
-Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
-
 ## Links References:
 
 * Projects:
@@ -263,22 +245,44 @@ Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
 | [WHO](https://www.who.int/emergencies/diseases/novel-coronavirus-2019) | World Health Orginization. |
 | [CDC](https://www.cdc.gov/coronavirus/2019-ncov/about/index.html) | Center for Disease control. |
 
-## Contributors ✨
+## ➤ Author <a name = "author"></a>
 
-<table>
-  <tr>
-    <td align="center"><a href="https://github.com/lpmatos"><img src="https://avatars2.githubusercontent.com/u/58797390?s=400&v=4" width="100px;" alt=""/><br /><sub><b>Lucca Pessoa</b></sub></a><br /><a href="https://github.com/lpmatos/omnistack/commits?author=lpmatos" title="Code">💻</a></a></td>
-  <tr>
-</table>
+👤 Hey!! If you like this project or if you find some bugs feel free to contact me in my channels:
 
-## Autor
+>
+> * Linktree: https://linktr.ee/lpmatos
+>
 
-<table>
-  <tr>
-    <td align="center"><a href="https://github.com/lpmatos"><img src="https://avatars2.githubusercontent.com/u/58797390?s=400&v=4" width="100px;" alt=""/><br /><sub><b>Lucca Pessoa</b></sub></a><br /><a href="https://github.com/lpmatos/omnistack/commits?author=lpmatos" title="Code">💻</a> <a href="#lpmatos" title="Design">🎨</a></td>
-  <tr>
-</table>
+## ➤ Versioning <a name = "versioning"></a>
 
-## Project Status
+To check the change history, please access the [**CHANGELOG.md**](CHANGELOG.md) file.
 
-* 🔛 In production
+## ➤ Project status <a name = "project-status"></a>
+
+This repository is a study project, therefore, it will not always be maintained 👻.
+
+## ➤ Donations <a name = "donations"></a>
+
+<p align="center">
+  <a href="https://www.blockchain.com/pt/btc/address/bc1qn50elv826qs2qd6xhfh6n79649epqyaqmtwky5">
+    <img alt="BTC Address" src="https://img.shields.io/badge/BTC%20Address-black?style=for-the-badge&logo=bitcoin&logoColor=white">
+  </a>
+
+  <a href="https://live.blockcypher.com/ltc/address/ltc1qwzrxmlmzzx68k2dnrcrplc4thadm75khzrznjw/">
+    <img alt="Litecoin Address" src="https://img.shields.io/badge/Litecoin%20Address-black?style=for-the-badge&logo=litecoin&logoColor=white">
+  </a>
+</p>
+
+## ➤ Show your support <a name = "show-your-support"></a>
+
+<div align="center">
+
+Give me a ⭐️ if this project helped you!
+
+<p>
+  <img alt="gif-header" src="https://www.icegif.com/wp-content/uploads/baby-yoda-bye-bye-icegif.gif" width="350px" float="center"/>
+</p>
+
+Made with 💜 by [me](https://github.com/lpmatos) 👋 inspired on [readme-md-generator](https://github.com/kefranabg/readme-md-generator)
+
+</div>
