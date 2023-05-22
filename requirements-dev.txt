@@ -3,7 +3,7 @@ coloredlogs==14.0
 python-json-logger==0.1.11
 
 # HTTP REQUEST
-requests==2.22.0
+requests==2.31.0
 
 # ASCII ART
 pyfiglet==0.7
